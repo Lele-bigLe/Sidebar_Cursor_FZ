@@ -1,295 +1,317 @@
 # Cursor Account Manager
 
-A comprehensive Chrome extension that allows you to manage multiple Cursor accounts and auto-fill payment information seamlessly. Features unified sidebar interface, advanced account management, and payment card auto-fill capabilities.
+一个功能全面的 Chrome 扩展程序，可用于管理多个 Cursor 账户并自动填充支付信息。具有统一的侧边栏界面、高级账户管理和支付卡自动填充功能。
 
-[![English](https://img.shields.io/badge/English-blue.svg)](README.md) [![Bahasa Indonesia](https://img.shields.io/badge/Bahasa%20Indonesia-red.svg)](README_IN.md)
+[![English](https://img.shields.io/badge/English-blue.svg)](README.md) [![中文](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-orange.svg)](README_CN.md) [![Bahasa Indonesia](https://img.shields.io/badge/Bahasa%20Indonesia-red.svg)](README_IN.md)
 
-## 🚀 Features
+## 🚀 功能特性
 
-### Core Features
+### 核心功能
 
-- **👤 Multi-Account Support**: Save and manage unlimited Cursor accounts
-- **🔄 One-Click Switching**: Click on any account to instantly switch
-- **📋 JSON Import**: Add accounts by pasting cookies JSON from any source
-- **💾 Auto Export**: All accounts saved to Downloads/cursor_accounts/ folder
-- **📧 Smart Detection**: Automatically extracts email and subscription status
-- **🔐 Secure Storage**: Cookies stored locally in Chrome's secure storage
+- **👤 多账户支持**: 保存和管理无限个 Cursor 账户
+- **🔄 一键切换**: 点击任意账户即可瞬间切换
+- **📋 JSON 导入**: 通过粘贴来自任何来源的 cookies JSON 添加账户
+- **💾 自动导出**: 所有账户自动保存到 Downloads/cursor_accounts/ 文件夹
+- **📧 智能检测**: 自动提取邮箱和订阅状态
+- **🔐 安全存储**: Cookies 存储在 Chrome 安全存储中
 
-### Payment Features NEW! 💳
+### 支付功能 NEW! 💳
 
-- **💳 Payment Card Management**: Store and manage multiple payment cards
-- **✨ Auto-Fill Checkout**: Automatically fill payment forms on e-commerce sites
-- **🎯 Stripe Support**: Enhanced compatibility with Stripe payment forms
-- **📂 Card Import**: Import card data from files (card.md format)
-- **🔍 Field Detection**: Automatically detect payment fields on current page
-- **🗑️ Secure Management**: Add, remove, and organize payment cards
+- **💳 支付卡管理**: 存储和管理多张支付卡
+- **✨ 自动填充结账**: 在电子商务网站上自动填充支付表单
+- **🎯 Stripe 支持**: 增强对 Stripe 支付表单的兼容性
+- **📂 卡片导入**: 从文件导入卡片数据（card.md 格式）
+- **🔍 字段检测**: 自动检测当前页面上的支付字段
+- **🗑️ 安全管理**: 添加、删除和组织支付卡
 
-### Interface Features
+### 界面功能
 
-- **📌 Unified Sidebar**: Single sidebar interface replacing popup (Chrome 114+)
-- **📑 Tab Navigation**: Switch between Accounts and Cards tabs
-- **🌓 Dark/Light Mode**: Automatic theme detection with manual toggle
-- **🔔 Smart Notifications**: Non-intrusive feedback for all operations
-- **🐛 Debug Panel**: Advanced debugging tools (Ctrl+Shift+D)
+- **📌 统一侧边栏**: 单侧边栏界面，替代弹出窗口（Chrome 114+）
+- **📑 标签导航**: 在账户和卡片标签之间切换
+- **🌓 深色/浅色模式**: 自动检测主题，支持手动切换
+- **🔔 智能通知**: 所有操作的非侵入式反馈
+- **🐛 调试面板**: 高级调试工具（Ctrl+Shift+D）
 
-## 📋 How It Works
+## 📋 工作原理
 
-### Account Management
+### 账户管理
 
-1. **Cookie Management**: Captures and stores Cursor session cookies securely
-2. **Smart Detection**: Automatically extracts email and plan info from dashboard
-3. **Instant Switching**: Clears current session and restores selected account cookies
-4. **Auto Export**: Saves accounts to Downloads/cursor_accounts/ for backup
-5. **Page Integration**: Injects account switcher into Cursor.com for quick access
+1. **Cookie 管理**: 安全捕获和存储 Cursor 会话 cookies
+2. **智能检测**: 从仪表板自动提取邮箱和计划信息
+3. **即时切换**: 清除当前会话并恢复所选账户的 cookies
+4. **自动导出**: 将账户保存到 Downloads/cursor_accounts/ 作为备份
+5. **页面集成**: 将账户切换器注入 Cursor.com 以便快速访问
 
-### Payment Auto-Fill
+### 支付自动填充
 
-1. **Form Detection**: Automatically identifies payment fields on checkout pages
-2. **Smart Filling**: Simulates human typing for better form compatibility
-3. **Stripe Integration**: Enhanced support for Stripe payment elements
-4. **Multi-Format Support**: Handles various payment form layouts and structures
+1. **表单检测**: 自动识别结账页面上的支付字段
+2. **智能填充**: 模拟人工键入以提高表单兼容性
+3. **Stripe 集成**: 增强对 Stripe 支付元素的支持
+4. **多格式支持**: 处理各种支付表单布局和结构
 
-## 🛠️ Installation
+## 🛠️ 安装
 
-1. Clone this repository or download the ZIP file
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right
-4. Click "Load unpacked" and select the extension directory
-5. The extension icon will appear in your Chrome toolbar
+1. 克隆此仓库或下载 ZIP 文件
+2. 打开 Chrome 并导航至 `chrome://extensions/`
+3. 在右上角启用"开发者模式"
+4. 点击"加载已解压的扩展程序"并选择扩展目录
+5. 扩展图标将出现在 Chrome 工具栏中
 
-## 📖 Usage
+## 📖 使用说明
 
-### Getting Started
+### 快速开始
 
-Click the extension icon to open the **unified sidebar interface**. The sidebar contains two main tabs:
+点击扩展图标打开**统一侧边栏界面**。侧边栏包含两个主要标签：
 
-- **👤 Accounts**: Manage your Cursor accounts
-- **💳 Cards**: Manage payment cards and auto-fill
+- **👤 账户**: 管理您的 Cursor 账户
+- **💳 卡片**: 管理支付卡和自动填充
 
-### Account Management
+### 账户管理
 
-#### Adding an Account
+#### 添加账户
 
-**Method 1: Import from JSON**
+**方法 1：从 JSON 导入**
 
-1. In the sidebar, go to **Accounts** tab
-2. Click "➕ Add Account"
-3. Paste your Cursor cookies JSON
-4. Optionally provide a custom name
-5. Handle duplicates: Choose "Replace" or "Cancel" if account already exists
+1. 在侧边栏中，转到**账户**标签
+2. 点击"➕ 添加账户"
+3. 粘贴您的 Cursor cookies JSON
+4. 可选：提供自定义名称
+5. 处理重复项：如果账户已存在，选择"替换"或"取消"
 
-**Method 2: Export Current Session**
+**方法 2：导出当前会话**
 
-1. Log into your Cursor account in the browser
-2. In the sidebar, click "💾 Export"
-3. Account will be saved to Downloads/cursor_accounts/
+1. 在浏览器中登录您的 Cursor 账户
+2. 在侧边栏中，点击"💾 导出"
+3. 账户将保存到 Downloads/cursor_accounts/
 
-**Method 3: Import Files**
+**方法 3：导入文件**
 
-1. Click "📁 Import Files"
-2. Select one or multiple account files from Downloads/cursor_accounts/
-3. Extension will import all valid accounts and skip duplicates
+1. 点击"📁 导入文件"
+2. 从 Downloads/cursor_accounts/ 选择一个或多个账户文件
+3. 扩展将导入所有有效账户并跳过重复项
 
-**Method 4: Advanced Tools**
+**方法 4：高级工具**
 
-1. Click "⚙️ Advanced Tools" (next to Import Files)
-2. Use "📂 Import Folder" to import entire Downloads/cursor_accounts/ directory
-3. Use "🔧 Fix Duplicates" to consolidate duplicate accounts
-4. Use "🗑️ Clear All Data" to reset extension completely
+1. 点击"⚙️ 高级工具"（导入文件旁边）
+2. 使用"📂 导入文件夹"导入整个 Downloads/cursor_accounts/ 目录
+3. 使用"🔧 修复重复项"合并重复账户
+4. 使用"🗑️ 清除所有数据"完全重置扩展
 
-#### Switching Accounts
+#### 切换账户
 
-1. In the **Accounts** tab, click on any account card
-2. The page will automatically reload with the new account
-3. Active account is marked with green indicator
+1. 在**账户**标签中，点击任意账户卡片
+2. 页面将自动重新加载新账户
+3. 活动账户标记有绿色指示器
 
-#### Account Troubleshooting
+#### 账户故障排除
 
-- **File Not Found**: Extension will offer to re-export if backup file is missing
-- **Switch Failure**: Clear browser data if switching fails due to cookie conflicts
-- **Duplicates**: Extension prevents duplicate imports and offers replacement option
+- **文件未找到**: 如果备份文件缺失，扩展将提供重新导出选项
+- **切换失败**: 如果由于 cookie 冲突导致切换失败，请清除浏览器数据
+- **重复项**: 扩展防止重复导入并提供替换选项
 
-### Payment Card Management NEW! 💳
+### 支付卡管理 NEW! 💳
 
-#### Adding Payment Cards
+#### 添加支付卡
 
-**Method 1: Manual Import**
+**方法 1：手动导入**
 
-1. Switch to **💳 Cards** tab
-2. Click "➕ Import Cards"
-3. Paste card data in format: `number|MM/YY|CVC` (one per line)
-4. Choose "Replace existing cards" or merge with existing
+1. 切换到**💳 卡片**标签
+2. 点击"➕ 导入卡片"
+3. 粘贴卡片数据，格式：`number|MM/YY|CVC`（每行一个）
+4. 选择"替换现有卡片"或与现有卡片合并
 
-**Method 2: File Import**
+**方法 2：文件导入**
 
-1. Prepare card data in `.md` or `.txt` files
-2. Click "➕ Import Cards" and select files
-3. Extension will parse and import card data automatically
+1. 在 `.md` 或 `.txt` 文件中准备卡片数据
+2. 点击"➕ 导入卡片"并选择文件
+3. 扩展将自动解析并导入卡片数据
 
-#### Using Auto-Fill
+#### 使用自动填充
 
-1. Navigate to any checkout page (e.g., Stripe, e-commerce sites)
-2. Click "🔍 Find Fields" to detect payment form
-3. Click "✨" button next to any card to auto-fill the form
-4. Extension will simulate human typing for better compatibility
+1. 导航到任意结账页面（例如 Stripe、电子商务网站）
+2. 点击"🔍 查找字段"检测支付表单
+3. 点击任意卡片旁边的"✨"按钮自动填充表单
+4. 扩展将模拟人工键入以提高兼容性
 
-#### Managing Cards
+#### 管理卡片
 
-- **View Cards**: See all saved cards with masked numbers
-- **Remove Cards**: Click "🗑️" button on individual cards
-- **Clear All**: Use "🗑️ Clear All" to remove all payment data
-- **Field Detection**: Automatic detection of Stripe and generic payment forms
+- **查看卡片**: 查看所有保存的卡片（带掩码号码）
+- **删除卡片**: 点击单个卡片上的"🗑️"按钮
+- **清除全部**: 使用"🗑️ 清除全部"删除所有支付数据
+- **字段检测**: 自动检测 Stripe 和通用支付表单
 
-### Debug Features 🐛
+### 调试功能 🐛
 
-Press **Ctrl+Shift+D** to enable debug panel:
+按**Ctrl+Shift+D**启用调试面板：
 
-- **📄 Show Data**: View all stored extension data
-- **🔧 Fix Duplicates**: Advanced duplicate consolidation
-- **🗑️ Clear All**: Complete extension reset
+- **📄 显示数据**: 查看所有存储的扩展数据
+- **🔧 修复重复项**: 高级重复项合并
+- **🗑️ 清除全部**: 完全重置扩展
 
-### Private Window Support
+### 隐私窗口支持
 
-Extension now works in private/incognito windows with proper data isolation.
+扩展现在可在隐私/隐身窗口中正常工作，具有适当的数据隔离。
 
-## 🎯 Key Features Overview
+## 🎯 主要功能概述
 
-### Account Management Features
+### 账户管理功能
 
-- **Visual Design**: Clean, modern UI with account cards showing email and status
-- **Color-Coded Status**: Free (blue), Pro (purple), Business (green)
-- **Active Indicator**: Green dot (🟢) shows currently active account
-- **Click to Switch**: Simply click any account card to switch instantly
-- **Auto Backup**: All accounts automatically saved to Downloads/cursor_accounts/
-- **Enhanced Duplicate Detection**: Smart duplicate handling with replace/cancel options
-- **Dashboard Redirect**: Automatically redirects to cursor.com/dashboard after switching
-- **Switch Failure Detection**: Warns when account switching fails due to cookie conflicts
-- **Browser Data Cleaner**: One-click access to browser's clear data settings (supports Chrome, Edge, Brave, Opera)
-- **Unified Sidebar**: Streamlined single-interface design (no more popup)
-- **Folder Import**: Import entire Downloads/cursor_accounts/ folder at once
-- **File Reveal**: Show account files in Windows Explorer with 📁 button (auto-export if missing)
-- **Smart Deletion**: Option to delete account only or include backup files in Downloads folder
-- **File Management**: Automatic cleanup of duplicate backup files during consolidation
-- **Private Window Support**: Full functionality in incognito mode with data isolation
+- **视觉设计**: 干净现代的 UI，账户卡片显示邮箱和状态
+- **颜色编码状态**: 免费（蓝色）、Pro（紫色）、商业（绿色）
+- **活动指示器**: 绿色圆点（🟢）显示当前活动账户
+- **点击切换**: 只需点击任意账户卡片即可瞬间切换
+- **自动备份**: 所有账户自动保存到 Downloads/cursor_accounts/
+- **增强重复检测**: 智能重复处理，具有替换/取消选项
+- **仪表板重定向**: 切换后自动重定向到 cursor.com/dashboard
+- **切换失败检测**: 当由于 cookie 冲突导致账户切换失败时警告
+- **浏览器数据清理器**: 一键访问浏览器的清除数据设置（支持 Chrome、Edge、Brave、Opera）
+- **统一侧边栏**: 简化的单界面设计（不再有弹出窗口）
+- **文件夹导入**: 一次性导入整个 Downloads/cursor_accounts/ 文件夹
+- **文件显示**: 使用 📁 按钮在 Windows 资源管理器中显示账户文件（如果缺失则自动导出）
+- **智能删除**: 选择仅删除账户或包括 Downloads 文件夹中的备份文件
+- **文件管理**: 在合并期间自动清理重复备份文件
+- **隐私窗口支持**: 在隐身模式下具有完整功能和数据隔离
 
-### Payment Management Features NEW!
+### 支付管理功能 NEW!
 
-- **Card Storage**: Securely store multiple payment cards locally
-- **Auto-Fill Engine**: Advanced form filling with human-like typing simulation
-- **Stripe Integration**: Enhanced compatibility with Stripe Elements
-- **Generic Form Support**: Works with most e-commerce checkout forms
-- **Field Detection**: Automatically identify card number, expiry, and CVC fields
-- **Card Type Detection**: Automatically identifies Visa, MasterCard, etc.
-- **Masked Display**: Secure card number display (\***\*-\*\***-\*\*\*\*-1234)
-- **File Import**: Import card data from .md/.txt files
-- **Bulk Management**: Import multiple cards at once
-- **Form Feedback**: Real-time detection of payment fields on current page
+- **卡片存储**: 安全本地存储多张支付卡
+- **自动填充引擎**: 具有模拟人工键入的高级表单填充
+- **Stripe 集成**: 增强对 Stripe Elements 的兼容性
+- **通用表单支持**: 适用于大多数电子商务结账表单
+- **字段检测**: 自动识别卡号、有效期和 CVC 字段
+- **卡类型检测**: 自动识别 Visa、MasterCard 等
+- **掩码显示**: 安全卡号显示（****-****-****-1234）
+- **文件导入**: 从 .md/.txt 文件导入卡片数据
+- **批量管理**: 一次性导入多张卡片
+- **表单反馈**: 实时检测当前页面上的支付字段
 
-### Interface Improvements
+### 界面改进
 
-- **Tab Navigation**: Clean separation between Accounts and Cards
-- **Unified Sidebar**: Single interface replacing dual popup/sidebar system
-- **Advanced Tools**: Consolidated advanced features in one place
-- **Debug Panel**: Developer tools for troubleshooting (Ctrl+Shift+D)
-- **Enhanced Error Handling**: Better user feedback and error recovery
-- **Responsive Design**: Optimized for sidebar use with proper scrolling
+- **标签导航**: 账户和卡片之间的清晰分离
+- **统一侧边栏**: 替代双弹出/侧边栏系统的单一界面
+- **高级工具**: 将高级功能整合在一处
+- **调试面板**: 用于故障排除的开发工具（Ctrl+Shift+D）
+- **增强错误处理**: 更好的用户反馈和错误恢复
+- **响应式设计**: 针对侧边栏使用进行优化，具有适当的滚动
 
-## 🔧 Technical Details
+## 🔧 技术细节
 
-### Permissions Required
+### 所需权限
 
-- `cookies`: To read and manage Cursor.com cookies
-- `storage`: To save account and payment data locally
-- `tabs`: To reload tabs after switching accounts
-- `scripting` & `activeTab`: For content script functionality and auto-fill
-- `downloads`: To save accounts to Downloads folder
-- `sidePanel`: For unified sidebar interface (Chrome 114+)
-- Host permissions for all URLs (for cookie management and form auto-fill)
+- `cookies`: 读取和管理 Cursor.com 的 cookies
+- `storage`: 本地保存账户和支付数据
+- `tabs`: 切换账户后重新加载标签页
+- `scripting` & `activeTab`: 用于内容脚本功能和自动填充
+- `downloads`: 将账户保存到 Downloads 文件夹
+- `sidePanel`: 用于统一侧边栏界面（Chrome 114+）
+- 所有 URL 的主机权限（用于 cookie 管理和表单自动填充）
 
-### Data Storage
+### 数据存储
 
-**Account Data:**
+**账户数据：**
 
-- Accounts stored in Chrome's local storage (`cursor_accounts` key)
-- Each account includes:
-  - Email address
-  - Subscription status (Free/Pro/Business)
-  - Session cookies
-  - Auto-generated or custom name
-- Automatic backup to Downloads/cursor_accounts/
+- 账户存储在 Chrome 本地存储中（`cursor_accounts` 键）
+- 每个账户包括：
+  - 邮箱地址
+  - 订阅状态（Free/Pro/Business）
+  - 会话 cookies
+  - 自动生成或自定义名称
+- 自动备份到 Downloads/cursor_accounts/
 
-**Payment Data:**
+**支付数据：**
 
-- Payment cards stored locally (`cursor_payment_cards` key)
-- Each card includes:
-  - Masked card number
-  - Expiry date (MM/YY format)
-  - CVC code
-  - Card type (Visa, MasterCard, etc.)
-  - Unique card ID
-- No sensitive data sent to external servers
+- 支付卡本地存储（`cursor_payment_cards` 键）
+- 每张卡片包括：
+  - 掩码卡号
+  - 有效期（MM/YY 格式）
+  - CVC 代码
+  - 卡类型（Visa、MasterCard 等）
+  - 唯一卡片 ID
+- 不向外部服务器发送敏感数据
 
-### Security & Privacy
+### 安全与隐私
 
-- **Local Storage Only**: All data stored locally in browser
-- **Domain Isolation**: Cookies only accessed for cursor.com domain
-- **No External Servers**: No data transmission to external services
-- **Incognito Support**: Private window compatibility with data isolation
-- **Secure Card Storage**: Payment data encrypted using Chrome's secure storage
-- **Auto-Fill Security**: Form filling uses content script injection only
+- **仅本地存储**: 所有数据存储在浏览器本地
+- **域隔离**: Cookies 仅访问 cursor.com 域名
+- **无外部服务器**: 不向外部服务传输数据
+- **隐身模式支持**: 具有数据隔离的隐私窗口兼容性
+- **安全卡片存储**: 使用 Chrome 安全存储加密支付数据
+- **自动填充安全**: 表单填充仅使用内容脚本注入
 
-### Architecture
+### 架构
 
-- **Unified Interface**: Single sidebar replacing popup/sidebar duality
-- **Service Worker**: Background script for account and payment management
-- **Content Scripts**: Injected for form detection and auto-fill functionality
-- **Storage Services**: Modular account and payment data management
-- **Tab Management**: Smart switching with automatic redirect handling
+- **统一界面**: 替代弹出/侧边栏双重的单一侧边栏
+- **Service Worker**: 用于账户和支付管理的后台脚本
+- **内容脚本**: 注入用于表单检测和自动填充功能
+- **存储服务**: 模块化账户和支付数据管理
+- **标签页管理**: 具有自动重定向处理的智能切换
 
-## 🤝 Contributing
+## 🤝 贡献
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+欢迎贡献！请随时提交 Pull Request。
 
-## 📄 License
+## 📄 许可证
 
-This project is licensed under the MIT License.
+本项目采用 MIT 许可证。
 
-## 🔄 Recent Updates
+## 🔄 最近更新
 
-### v2.0 - Major Interface & Payment Update
+### v2.0 - 重大界面和支付更新
 
-- **NEW**: Payment card management and auto-fill functionality
-- **NEW**: Enhanced Stripe payment form support
-- **CHANGED**: Unified sidebar interface (popup removed)
-- **IMPROVED**: Better duplicate account handling
-- **IMPROVED**: Enhanced private window support
-- **IMPROVED**: Advanced error handling and recovery
-- **ADDED**: Debug panel for troubleshooting
-- **ADDED**: Tab navigation between Accounts and Cards
-- **FIXED**: File not found in Downloads auto-recovery
-- **FIXED**: Account switching reliability
+- **新增**: 支付卡管理和自动填充功能
+- **新增**: 增强 Stripe 支付表单支持
+- **更改**: 统一侧边栏界面（移除弹出窗口）
+- **改进**: 更好的重复账户处理
+- **改进**: 增强隐私窗口支持
+- **改进**: 高级错误处理和恢复
+- **添加**: 故障排除调试面板
+- **添加**: 账户和卡片之间的标签导航
+- **修复**: Downloads 中文件未找到的自动恢复
+- **修复**: 账户切换可靠性
 
-## 🛡️ Privacy & Security
+## 🛡️ 隐私与安全
 
-This extension prioritizes user privacy and security:
+本扩展优先考虑用户隐私和安全：
 
-- **Zero Telemetry**: No usage data collection or tracking
-- **Local Storage**: All data remains on your device
-- **No Network Requests**: Extension doesn't communicate with external servers
-- **Secure Storage**: Uses Chrome's encrypted storage APIs
-- **Open Source**: All code is auditable and transparent
-- **Minimal Permissions**: Only requests necessary browser permissions
+- **零遥测**: 不收集或跟踪使用数据
+- **本地存储**: 所有数据保留在您的设备上
+- **无网络请求**: 扩展不与外部服务器通信
+- **安全存储**: 使用 Chrome 的加密存储 API
+- **开源**: 所有代码可审计且透明
+- **最少权限**: 仅请求必要的浏览器权限
 
-## 🙏 Acknowledgments
 
-Inspired by several excellent browser extensions:
+## ☕ 支持作者
+觉得对你有用的话，请小编喝杯咖啡吧！
 
-- **[GitHub Account Switcher](https://github.com/yuezk/github-account-switcher)** - For the multi-account switching concept and UI design patterns
-- **[Cookie Editor](https://github.com/Moustachauve/cookie-editor)** - For cookie management and JSON import/export functionality
-- **[Bookmark Sidebar](https://github.com/Kiuryy/Bookmark_Sidebar)** - For the unified sidebar interface design and tab navigation approach
+<div align="center">
+  <img src="/71a4e70dad64da7a900749ff89786623.jpg" alt="微信支付" width="200" style="margin: 10px;">
+  <img src="/8dfac831d0d40b58246d2978df8018a1.jpg" alt="支付宝" width="200" style="margin: 10px;">
+</div>
 
-Payment form compatibility testing done with various e-commerce platforms and Stripe implementations.
+
+
+
+
+## 📱 关注我们
+
+**关注公众号【码上全栈创享家】**  
+计算机专业的技术百宝箱，持续分享项目实战、前端/后端/小程序开发干货，助力编程成长，欢迎交流、收藏与转发！
+<div align="center">
+  <img src="/e933254665ff44f078139bd8b72c577a.jpg" alt="公众号" width="200" style="margin: 10px;">
+</div>
+
+## 🙏 致谢
+
+灵感来自几个优秀的浏览器扩展：
+
+- **[GitHub Account Switcher](https://github.com/yuezk/github-account-switcher)** - 用于多账户切换概念和 UI 设计模式
+- **[Cookie Editor](https://github.com/Moustachauve/cookie-editor)** - 用于 cookie 管理和 JSON 导入/导出功能
+- **[Bookmark Sidebar](https://github.com/Kiuryy/Bookmark_Sidebar)** - 用于统一侧边栏界面设计和标签导航方法
+
+支付表单兼容性测试使用各种电子商务平台和 Stripe 实现完成。
 
 ---
 
-**Important**: This extension is not affiliated with Cursor AI, Stripe, or any payment processors. Use responsibly and at your own risk. Always verify auto-filled payment information before submitting forms.
+**重要提示**: 此扩展与 Cursor AI、Stripe 或任何支付处理器无关。请负责任地使用，风险自负。在提交表单之前，请始终验证自动填充的支付信息。
+
