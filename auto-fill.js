@@ -33,19 +33,21 @@ class AutoFillManager {
 
     this.setupMessageListener();
     this.setupFormSubmitHandler();
+    this.loadStoredData();
 
-    // Auto-activate if we're on a Stripe checkout page
-    if (window.location.href.includes("checkout.stripe.com")) {
-      console.log("🚀 Stripe checkout page detected - Ready for activation");
-      setTimeout(() => this.initAutoActivation(), 1000);
-    }
+    console.log("✅ AutoFillManager initialized - Ready for manual activation");
+  }
 
-    // Handle OAuth redirect completion
-    if (
-      window.location.href.includes("authenticator.cursor.sh") &&
-      window.location.href.includes("client_id=")
-    ) {
-      setTimeout(() => this.handleOAuthCompletion(), 2000);
+  // 加载存储的支付数据
+  async loadStoredData() {
+    try {
+      const result = await chrome.storage.local.get('generatedPaymentData');
+      if (result.generatedPaymentData) {
+        this.generatedData = result.generatedPaymentData;
+        console.log("📋 已加载存储的支付数据");
+      }
+    } catch (error) {
+      console.log("⚠️ 加载存储数据失败:", error);
     }
   }
 
@@ -69,17 +71,31 @@ class AutoFillManager {
   // Setup message listener for communication with extension
   setupMessageListener() {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      console.log("📨 收到消息:", message.type);
+      
       switch (message.type) {
         case "fillPaymentForm":
-          this.fillPaymentForm(message.data)
+          // 使用存储的数据或消息中的数据
+          this.fillPaymentFormManual()
             .then(() => {
               sendResponse({ success: true });
             })
             .catch((error) => {
-              console.error("Fill payment form error:", error);
+              console.error("填充表单错误:", error);
               sendResponse({ success: false, error: error.message });
             });
-          break;
+          return true; // 保持消息通道开启
+
+        case "submitPaymentForm":
+          this.submitFormImmediately()
+            .then(() => {
+              sendResponse({ success: true });
+            })
+            .catch((error) => {
+              console.error("提交表单错误:", error);
+              sendResponse({ success: false, error: error.message });
+            });
+          return true;
 
         case "activateProTrial":
           this.activateProTrial()
@@ -90,7 +106,7 @@ class AutoFillManager {
               console.error("Activate pro trial error:", error);
               sendResponse({ success: false, error: error.message });
             });
-          break;
+          return true;
 
         case "startProTrialActivation":
           this.startProTrialActivation(message.cards)
@@ -1432,137 +1448,206 @@ class AutoFillManager {
 
   // Fill generic payment forms
   async fillGenericForm(data) {
-    console.log("🔧 Filling generic payment form...");
+    console.log("🔧 开始填充通用支付表单...");
+    console.log("📋 数据:", { 
+      cardCount: data.cards?.length, 
+      name: data.name, 
+      address: data.address 
+    });
 
     const currentCard = data.cards[0];
-    if (!currentCard) return false;
+    if (!currentCard) {
+      console.error("❌ 没有卡片数据");
+      return false;
+    }
 
-    // Card number
+    let filled = 0;
+
+    // Card number - 扩展选择器
     const cardNumberSelectors = [
       'input[autocomplete="cc-number"]',
       'input[name*="card"][name*="number"]',
-      'input[placeholder*="card"]',
+      'input[name*="cardnumber"]',
+      'input[placeholder*="card number" i]',
+      'input[placeholder*="卡号" i]',
+      'input[id*="card"][id*="number"]',
+      'input[type="tel"][name*="card"]',
+      '#cardNumber',
+      '#card-number',
+      '#card_number'
     ];
 
+    console.log("🔍 查找卡号字段...");
     for (const selector of cardNumberSelectors) {
       const field = document.querySelector(selector);
       if (field && this.isFieldReady(field)) {
-        await this.fillFieldReliably(
+        console.log(`✅ 找到卡号字段: ${selector}`);
+        const success = await this.fillFieldReliably(
           field,
           currentCard.number,
-          "Card Number (Generic)"
+          "卡号 (通用)"
         );
+        if (success) filled++;
         break;
       }
     }
 
-    // Expiry
+    // Expiry - 扩展选择器
     const expirySelectors = [
       'input[autocomplete="cc-exp"]',
-      'input[placeholder*="MM"]',
-      'input[placeholder*="expiry"]',
+      'input[placeholder*="MM" i]',
+      'input[placeholder*="expiry" i]',
+      'input[placeholder*="有效期" i]',
+      'input[name*="expiry"]',
+      'input[name*="exp"]',
+      '#cardExpiry',
+      '#card-expiry'
     ];
 
+    console.log("🔍 查找有效期字段...");
     for (const selector of expirySelectors) {
       const field = document.querySelector(selector);
       if (field && this.isFieldReady(field)) {
-        const expiryValue = `${currentCard.month.toString().padStart(2, "0")}/${
-          currentCard.year
-        }`;
-        await this.fillFieldReliably(field, expiryValue, "Expiry (Generic)");
+        console.log(`✅ 找到有效期字段: ${selector}`);
+        const expiryValue = `${currentCard.month.toString().padStart(2, "0")}/${currentCard.year}`;
+        const success = await this.fillFieldReliably(field, expiryValue, "有效期 (通用)");
+        if (success) filled++;
         break;
       }
     }
 
-    // CVC
+    // CVC - 扩展选择器
     const cvcSelectors = [
       'input[autocomplete="cc-csc"]',
-      'input[placeholder*="CVC"]',
-      'input[placeholder*="CVV"]',
+      'input[placeholder*="CVC" i]',
+      'input[placeholder*="CVV" i]',
+      'input[placeholder*="安全码" i]',
       'input[name*="cvc"]',
       'input[name*="cvv"]',
+      'input[name*="security"]',
+      '#cardCvc',
+      '#card-cvc',
+      '#cvv',
+      '#cvc'
     ];
 
+    console.log("🔍 查找 CVC 字段...");
     for (const selector of cvcSelectors) {
       const field = document.querySelector(selector);
       if (field && this.isFieldReady(field)) {
-        await this.fillFieldReliably(field, currentCard.cvv, "CVC (Generic)");
+        console.log(`✅ 找到 CVC 字段: ${selector}`);
+        const success = await this.fillFieldReliably(field, currentCard.cvv, "CVC (通用)");
+        if (success) filled++;
         break;
       }
     }
 
-    // Name
+    // Name - 扩展选择器
     if (data.name) {
       const nameSelectors = [
         'input[autocomplete="cc-name"]',
+        'input[autocomplete="name"]',
         'input[name*="name"]',
-        'input[placeholder*="name"]',
+        'input[name*="cardholder"]',
+        'input[placeholder*="name" i]',
+        'input[placeholder*="姓名" i]',
+        '#billingName',
+        '#billing-name',
+        '#cardholder-name'
       ];
 
+      console.log("🔍 查找姓名字段...");
       for (const selector of nameSelectors) {
         const field = document.querySelector(selector);
         if (field && this.isFieldReady(field)) {
-          await this.fillFieldReliably(field, data.name, "Name (Generic)");
+          console.log(`✅ 找到姓名字段: ${selector}`);
+          const success = await this.fillFieldReliably(field, data.name, "姓名 (通用)");
+          if (success) filled++;
           break;
         }
       }
     }
 
-    return true;
-  }
+    // Address fields
+    if (data.address) {
+      console.log("🏠 填充地址信息...");
+      
+      // Postal code
+      const postalSelectors = [
+        'input[autocomplete="postal-code"]',
+        'input[name*="postal"]',
+        'input[name*="zip"]',
+        'input[placeholder*="邮编" i]',
+        '#billingPostalCode',
+        '#postal-code'
+      ];
+      
+      for (const selector of postalSelectors) {
+        const field = document.querySelector(selector);
+        if (field && this.isFieldReady(field)) {
+          await this.fillFieldReliably(field, data.address.postalCode, "邮编");
+          break;
+        }
+      }
 
-  // Initialize auto-activation when landing on Stripe checkout
-  initAutoActivation() {
-    console.log("🔄 Checking for auto-activation...");
+      // City
+      const citySelectors = [
+        'input[autocomplete="address-level2"]',
+        'input[name*="city"]',
+        'input[placeholder*="城市" i]',
+        '#billingLocality'
+      ];
+      
+      for (const selector of citySelectors) {
+        const field = document.querySelector(selector);
+        if (field && this.isFieldReady(field)) {
+          await this.fillFieldReliably(field, data.address.city, "城市");
+          break;
+        }
+      }
 
-    // Prevent auto-activation if form was already filled
-    if (this.formFilledSuccessfully) {
-      console.log(
-        "⚠️ Form already filled successfully, skipping auto-activation"
-      );
-      return;
+      // Address line
+      const addressSelectors = [
+        'input[autocomplete="address-line1"]',
+        'input[name*="address"]',
+        'input[placeholder*="地址" i]',
+        '#billingAddressLine1'
+      ];
+      
+      for (const selector of addressSelectors) {
+        const field = document.querySelector(selector);
+        if (field && this.isFieldReady(field)) {
+          await this.fillFieldReliably(field, data.address.street, "地址");
+          break;
+        }
+      }
     }
 
-    // If we have stored data, use it immediately
-    if (this.generatedData) {
-      console.log("📋 Found stored payment data, starting auto-fill...");
-      setTimeout(() => {
-        // Double check before filling
-        if (!this.formFilledSuccessfully) {
-          console.log("🚀 Auto-filling form with stored data");
-          this.fillStripeForm(this.generatedData);
-        } else {
-          console.log("⚠️ Form was filled while waiting, skipping");
-        }
-      }, 1000);
+    console.log(`✅ 通用表单填充完成，成功填充 ${filled} 个主要字段`);
+    return filled > 0;
+  }
+
+  // 手动填充支付表单（通过按钮触发）
+  async fillPaymentFormManual() {
+    console.log("🚀 手动填充表单");
+
+    // 重新加载数据确保是最新的
+    await this.loadStoredData();
+
+    if (!this.generatedData) {
+      console.error("❌ 没有找到生成的支付数据");
+      throw new Error("请先生成支付数据");
+    }
+
+    console.log("📋 使用存储的数据:", this.generatedData);
+
+    // 检测是否为 Stripe 页面
+    if (window.location.href.includes("checkout.stripe.com")) {
+      console.log("🎯 检测到 Stripe 支付页面");
+      return this.fillStripeForm(this.generatedData);
     } else {
-      console.log("📋 Ready for activation commands from extension...");
-
-      // Try to get data from extension if available
-      try {
-        chrome.runtime.sendMessage(
-          {
-            type: "generatePaymentData",
-            options: {},
-          },
-          (response) => {
-            if (response && response.success && response.data) {
-              console.log("🎲 Generated payment data from extension");
-              this.generatedData = response.data;
-
-              // Auto-fill if form is ready
-              setTimeout(() => {
-                if (!this.formFilledSuccessfully) {
-                  console.log("🚀 Auto-filling with fresh generated data");
-                  this.fillStripeForm(this.generatedData);
-                }
-              }, 1500);
-            }
-          }
-        );
-      } catch (error) {
-        console.log("⚠️ Could not get payment data from extension:", error);
-      }
+      console.log("🎯 检测到通用支付页面");
+      return this.fillGenericForm(this.generatedData);
     }
   }
 

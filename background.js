@@ -1,13 +1,12 @@
-// Background script for Cursor Account Manager extension
+// Background script for Payment Data Generator extension
 
-// Import services
-importScripts("services/account.js");
-importScripts("services/payment.js");
-importScripts("services/account-deletion.js");
+// Import only the generator service
 importScripts("services/generator.js");
 
 // Initialize generator service
 const generatorService = new GeneratorService();
+
+console.log('✅ Background script loaded');
 
 // Stripe API monitoring for automatic card switching
 const STRIPE_API_URL = "https://api.stripe.com/v1/payment_methods";
@@ -79,46 +78,20 @@ if (
 
 // Initialize on install
 chrome.runtime.onInstalled.addListener(async () => {
-  console.log("Cursor Account Manager extension installed");
+  console.log("✅ 支付信息生成器扩展已安装");
 
   try {
     // Enable side panel for all tabs (if supported)
     if (chrome.sidePanel) {
-      console.log("Side Panel API available");
+      console.log("✅ Side Panel API 可用");
       await chrome.sidePanel.setPanelBehavior({
         openPanelOnActionClick: true, // Always open sidebar on click
       });
     } else {
-      console.log("Side Panel API not available - requires Chrome 114+");
-    }
-
-    // Check if there's an active session
-    const cookies = await accountService.getCurrentCookies();
-    console.log("Found cookies:", cookies.length);
-
-    if (cookies.length > 0) {
-      const username = await accountService.autoDetectAccount();
-      console.log("Auto-detected username:", username);
-
-      if (username) {
-        await accountService.updateBadge(username);
-      }
+      console.log("⚠️ Side Panel API 不可用 - 需要 Chrome 114+");
     }
   } catch (error) {
-    console.error("Error during initialization:", error);
-  }
-});
-
-// Sync accounts when cookies change
-chrome.cookies.onChanged.addListener(async (changeInfo) => {
-  if (changeInfo.cookie.domain.includes("cursor.com")) {
-    // If cookie was added and we don't have an active account, auto-detect
-    if (!changeInfo.removed) {
-      const activeAccount = await accountService.getActiveAccount();
-      if (!activeAccount) {
-        await accountService.autoDetectAccount();
-      }
-    }
+    console.error("❌ 初始化错误:", error);
   }
 });
 
@@ -1197,29 +1170,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         case "generateAddress":
           try {
-            const address = generatorService.generateAddress(
-              request.country || "US"
-            );
+            console.log('📍 收到生成地址请求:', request.options);
+            const country = request.options?.country || request.country || "US";
+            console.log('🌍 使用国家:', country);
+            
+            const address = generatorService.generateAddress(country);
             const name = generatorService.generateName();
             const formatted = generatorService.formatAddressForDisplay(address);
+            
+            console.log('✅ 地址生成成功:', { country, name });
+            
             sendResponse({
               success: true,
               data: { address: address, name: name, formatted: formatted },
             });
           } catch (error) {
+            console.error('❌ 生成地址错误:', error);
             sendResponse({ success: false, error: error.message });
           }
           break;
 
         case "generatePaymentData":
           try {
+            console.log('💳 收到生成卡片请求:', request.options);
             const options = request.options || {};
             const paymentData = generatorService.generatePaymentData(options);
+            console.log('✅ 卡片生成成功:', paymentData.cards.length, '张');
             sendResponse({
               success: true,
               data: paymentData,
             });
           } catch (error) {
+            console.error('❌ 生成卡片错误:', error);
             sendResponse({ success: false, error: error.message });
           }
           break;

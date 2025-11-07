@@ -1,17 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Cursor Account Manager",
+  "name": "支付信息生成器",
   "version": "2.0",
-  "description": "Manage multiple Cursor accounts and switch between them easily",
+  "description": "生成测试用支付数据并自动填充到表单中",
   "permissions": [
-    "cookies",
     "storage",
     "tabs",
     "scripting",
     "activeTab",
-    "downloads",
-    "sidePanel",
-    "webRequest"
+    "sidePanel"
   ],
   "host_permissions": ["<all_urls>"],
   "incognito": "split",
@@ -23,19 +20,12 @@
     }
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background-simple.js"
   },
   "side_panel": {
     "default_path": "sidepanel.html"
   },
   "content_scripts": [
-    {
-      "matches": ["https://*.cursor.com/*", "https://cursor.com/*"],
-      "js": ["content.js"],
-      "css": ["content.css"],
-      "run_at": "document_end",
-      "all_frames": true
-    },
     {
       "matches": ["<all_urls>"],
       "js": ["auto-fill.js"],
@@ -46,13 +36,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "services/console-service.js",
         "services/generator.js",
-        "stripe.js",
-        "auto-fill.js",
-        "modules/bypass/bypass_working.js",
-        "modules/bypass/bypass_invoice.js",
-        "modules/bypass/bypass_delete_auto.js"
+        "auto-fill.js"
       ],
       "matches": ["<all_urls>"]
     }

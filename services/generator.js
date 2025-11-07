@@ -305,10 +305,50 @@ class GeneratorService {
           const second = Math.floor(Math.random() * 900 + 100);
           return `${first}-${second}`;
         }
+      },
+      'AU': {
+        states: ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'],
+        cities: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Gold Coast', 'Canberra', 'Newcastle', 'Wollongong', 'Hobart'],
+        streets: ['George St', 'Elizabeth St', 'Queen St', 'King St', 'Collins St', 'Bourke St', 'Pitt St', 'Market St', 'Park St', 'York St'],
+        zipPattern: () => Math.floor(Math.random() * 9000 + 1000).toString()
+      },
+      'FR': {
+        states: ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Auvergne-Rhône-Alpes', 'Nouvelle-Aquitaine', 'Occitanie', 'Hauts-de-France', 'Pays de la Loire', 'Bretagne', 'Grand Est', 'Normandie'],
+        cities: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Montpellier', 'Bordeaux', 'Lille'],
+        streets: ['Rue de la Paix', 'Avenue des Champs-Élysées', 'Rue du Commerce', 'Boulevard Saint-Germain', 'Rue de Rivoli', 'Avenue Victor Hugo', 'Rue Lafayette', 'Boulevard Haussmann', 'Rue Montmartre', 'Avenue de la République'],
+        zipPattern: () => Math.floor(Math.random() * 95000 + 1000).toString().padStart(5, '0')
+      },
+      'CN': {
+        provinces: ['北京', '上海', '广东', '江苏', '浙江', '四川', '湖北', '湖南', '河南', '山东'],
+        cities: ['北京', '上海', '深圳', '广州', '成都', '杭州', '武汉', '南京', '西安', '重庆'],
+        streets: ['中山路', '人民路', '解放路', '建设路', '胜利路', '和平路', '新华路', '文化路', '前进路', '幸福路'],
+        zipPattern: () => {
+          const first = Math.floor(Math.random() * 9 + 1);
+          const rest = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
+          return `${first}${rest}`;
+        }
+      },
+      'HK': {
+        districts: ['中西區', '灣仔區', '東區', '南區', '油尖旺區', '深水埗區', '九龍城區', '黃大仙區', '觀塘區', '葵青區'],
+        cities: ['香港島', '九龍', '新界'],
+        streets: ['皇后大道中', '德輔道中', '軒尼詩道', '彌敦道', '廣東道', '海防道', '駱克道', '告士打道', '金鐘道', '夏慤道'],
+        zipPattern: () => '' // 香港沒有郵編系統
+      },
+      'MO': {
+        districts: ['花地瑪堂區', '聖安多尼堂區', '大堂區', '望德堂區', '風順堂區', '嘉模堂區', '路氹填海區', '聖方濟各堂區'],
+        cities: ['澳門半島', '氹仔', '路環'],
+        streets: ['新馬路', '殷皇子大馬路', '亞美打利庇盧大馬路', '友誼大馬路', '高士德大馬路', '羅理基博士大馬路', '南灣大馬路', '何賢公園', '氹仔中央公園', '路環市區'],
+        zipPattern: () => '' // 澳門沒有郵編系統
       }
     };
 
-    return addressData[country] || addressData['US'];
+    // 如果請求的國家不存在，返回美國數據並記錄警告
+    if (!addressData[country]) {
+      console.warn(`⚠️ 國家 "${country}" 沒有地址數據，使用美國數據`);
+      return addressData['US'];
+    }
+
+    return addressData[country];
   }
 
   // Generate address for specific country
@@ -325,6 +365,7 @@ class GeneratorService {
     else if (data.provinces) state = data.provinces[Math.floor(Math.random() * data.provinces.length)];
     else if (data.counties) state = data.counties[Math.floor(Math.random() * data.counties.length)];
     else if (data.voivodeships) state = data.voivodeships[Math.floor(Math.random() * data.voivodeships.length)];
+    else if (data.districts) state = data.districts[Math.floor(Math.random() * data.districts.length)];
 
     return {
       street: `${streetNumber} ${streetName}`,
